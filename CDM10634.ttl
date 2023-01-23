@@ -1,0 +1,174 @@
+@prefix : <http://purl.org/aiaontology#> .
+@prefix cdmo: <http://www.semanticweb.org/lucia/ontologies/2023/0/cdmontology> .
+@prefix cdmm: <http://aia-projects.org/cdmmethodologies/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sdgo: <http://metadata.un.org/sdg/ontology> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@base <http://aia-projects.org/CDM10634#> .
+
+# newspaper approach
+<KWFDPL> a :LegalPerson ;
+    rdfs:label "Krishna Wind Farm Developers Pvt. Ltd."^^xsd:string .
+
+<projectLocation> a :Location ;
+    :hasLatitude "18.738010"^^xsd:string ;
+    :hasLongtitude "75.312065"^^xsd:string ;
+    :hasLabel "Mohari Village, Jamkhed taluka, District Ahmednagar, Maharashtra state, India"^^xsd:string .
+
+<creditingPeriod> a :CreditingPeriod ;
+    prov:startedAtTime "2020-12-25Z00:00:00"^^xsd:dateTime ;
+    time:hasDuration "7 years" ;
+    prov:endedAtTime "2027-12-25Z00:00:00"^^xsd:dateTime .
+
+<projectPeriod> a :AccountingPeriod ;
+    :hasStartDateTime "2017-03-29Z00:00:00"^^xsd:dateTime ;
+    :hasDuration "25 years" ;
+    :hasEndDateTime "2042-03-29Z00:00:00"^^xsd:dateTime .
+
+<procedure> a :Procedure .
+
+<solarModules> a :Instrument ;
+    :hasMake "Hitachi"^^xsd:string ;
+    :hasDescription "Poly Crystalline type 37,450 Solar PV modules having capacity of 325 Wp and 320 Wp of Canadian solar make and 8 nos. of invertor of Hitachi make with rating capacity 1250 KW." .
+
+<procedure> :hasInstrument <solarModules> ;
+    :hasOutput "18,775 MWh electricity"^^xsd:string .
+
+<tool07> a :Procedure ;
+    owl:sameAs cdmo:tool07 .
+
+# necessary and sufficient condition: the set of monitored parameters is exactly the same as the collection specified.
+<monitoredParameter> a :Condition ;
+    owl:equivalentClass [ a owl:Restriction ;
+        owl:onProperty :hasParameter ;
+        owl:allValuesFrom (
+            [:hasName "EFgrid,CM,y"^^xsd:string ;
+            rdfs:label "Combined margin CO2 emission factor for the project electricity system in year y"^^xsd:string ;
+            :hasUnitOfMeasure "t CO2/MWh"^^xsd:string]
+
+            [:hasName "EFgrid,BM,y"^^xsd:string ;
+            rdfs:label "Build margin CO2 emission factor for the project electricity system in year y"^^xsd:string ;
+            :hasUnitOfMeasure "t CO2/MWh"^^xsd:string]
+
+            [:hasName "EFgrid,OM,y"^^xsd:string ;
+            rdfs:label "Operating margin CO2 emission factor for the project electricity system in year y"^^xsd:string ;
+            :hasUnitOfMeasure "t CO2/MWh"^^xsd:string] ) ] .
+
+<procedure> :hasProcedure <tool07> ;
+    :hasParameter <monitoredParameter> .
+
+# moet eintlik 'n condition wees
+# sintaks: <procedure> hascondition condition
+# condition definedby rdfsresource
+
+<CDM10634> a :Activity ;
+    rdfs:label "10 MW Solar Power Project by Krishna Wind Farm Developers Pvt. Ltd." ;
+    rdfs:label """KWFDPL has set up a Solar PV Power Project in Mohari Village, Jamkhed taluka, District Ahmednagar in Maharashtra state.
+        This Installed solar power project is based on Poly Crystalline Silicon Photo Voltaic technology.
+        Sunlight with the help of PV modules will be converted into D.C. power which will then be combined to get the desired level of current and voltage.
+        Now this D.C. output will be converted with the help of Inverters into the A.C. power of certain voltage and current level.
+        At this stage current and voltage level can be stepped up with the help of transformers which then will be injected into the grid through distribution licensee substation."""^^xsd:string ;
+    rdfs:seeAlso <https://cdm.unfccc.int/UserManagement/FileStorage/KLW43YCRI1OV9P8Q527TGJXBF6EDNU> ;
+    # who
+    :isPerformedBy <KWFDPL> ;
+    # where
+    :hasLocation <projectLocation> ;
+    # when
+    :hasProjectPeriod <projectPeriod> ;
+    :hasCreditingPeriod <creditingPeriod> ;
+    # why
+    :hasObjective "Export renewable electricity produced by solar PV power project to the power deficit grid in order to decrease power shortage, diversify the grid and reduce greenhouse gas emissions." ;
+    :hasObjective "Contribute to social, economic, environmental and technological well-being." ;
+    :hasSDG sdgo:7, sdgo:13 ;
+    # how
+    :hasProcedure <procedure> .
+
+#claim information
+<baselineState> a :State ;
+    # KORRIGEER HIEDIE SINTAKS
+    :hasParVal [:hasName "annualAveGHGEmissions"^^xsd:string ;
+        :hasUnitOfMeasure "tCO2e"^^xsd:string ;
+        :hasValue "HOEMOETEKWEET"^^xsd:string] ,
+
+        [:hasName "electricityGenerated"^^xsd:string ;
+        :hasUnitOfMeasure "MWh"^^xsd:string ;
+        :hasValue "0"^^xsd:float] .
+
+<projectState> a :State ;
+    :hasParVal [:hasName "annualAveGHGEmissions"^^xsd:string ;
+        :hasUnitOfMeasure "tCO2e"^^xsd:string ;
+        :hasValue "annualAveGHGEmissions - 18123"^^xsd:string] ,
+
+    [:hasName "electricityGenerated"^^xsd:string ;
+    :hasUnitOfMeasure "MWh"^^xsd:string ;
+    :hasValue "18775"^^xsd:float] .
+
+<impact> a :State ;
+    # KORRIGEER HIERDIE SINTAKS
+    :hasParameter [:hasName "EFgrid,CM,y"^^xsd:string ;
+        rdfs:label "Combined margin CO2 emission factor for the project electricity system in year y"^^xsd:string ;
+        skos:prefLabel "Baseline Emission Factor"^^xsd:string ;
+        :hasUnitOfMeasure "t CO2/MWh"^^xsd:string ;
+        :hasValue "0.9653"^^xsd:float] ,
+
+    [:hasName "EFgrid,BM,y"^^xsd:string ;
+        rdfs:label "Build margin CO2 emission factor for the project electricity system in year y"^^xsd:string ;
+        :hasUnitOfMeasure "t CO2/MWh"^^xsd:string ;
+        :hasValue " 0.9083"^^xsd:float] ,
+
+    [:hasName "EFgrid,OM,y"^^xsd:string ;
+        rdfs:label "Operating margin CO2 emission factor for the project electricity system in year y"^^xsd:string ;
+        :hasUnitOfMeasure "t CO2/MWh"^^xsd:string ;
+        :hasValue "0.9843"^^xsd:float] ,
+
+    [:hasName "Emission reduction"^^xsd:string ;
+        rdfs:label "Operating margin CO2 emission factor for the project electricity system in year y"^^xsd:string ;
+        :hasUnitOfMeasure "average t CO2/MWh/year"^^xsd:string ;
+        :hasValue "18123"^^xsd:float] .
+
+<SD> a :StateDiff ;
+    :hasState1 <baselineState> ;
+    :hasState2 <projectState> .
+
+<impactclaim> a :ImpactClaim ;
+    :hasStateDiff <SD> ;
+    :hasClaimant <KWFDPL> ;
+    :hasAccountingPeriod <accountingPeriod> ;
+    # TODO SIT BETER AUX VERB IN - REGARDING
+    :hasActivities <projectActivities> ;
+    :hasContent <impact> .
+
+# TODO
+# monitoring plan
+# organizational structure
+# (currently buite koerantberig workflow)
+
+# Additions to aia following annotation of this project:
+# Created a Period class, superclass of ProjectPeriod, AccountingPeriod, CreditingPeriod
+# :Period rdf:type owl:Class ;
+#     owl:equivalentClass time:Interval .
+# :hasPeriod rdf:type owl:ObjectProperty ;
+#     rdfs:domain :Activity ,
+#                 :Event ,
+#                 :Project ;
+#     rdfs:range :Period .
+# :Period has the startedAtTime, endedAtTime, and hasDuration properties
+
+# Added hasMethodology property
+# Change range of :hasUnitOfMeasure to rdf:PlainLiteral
+
+# :Location has :Point
+# :Point :hasLongtitude, :hasLatitude, :hasAltitude
+# :Path subclass of :Location
+
+# :hasObjective skos:narrower :hasSDG
+
+# :hasSDG has range http://metadata.un.org/sdg/ontology#Goal
+
+# Suggestion/possible syntax for Claim as implemented above
+# Added :hasContent with ImpactClaim in domain
+# Made ImpactClaim subclass of Claim
